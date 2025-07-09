@@ -62,9 +62,8 @@ jobs:
 
       - name: Build cross-platform binaries
         run: |
-          cd desktop-extension-claude
-          chmod +x build-binaries.sh sync-version.sh
-          ./build-binaries.sh
+          chmod +x desktop-extension-claude/build-binaries.sh desktop-extension-claude/sync-version.sh
+          ./desktop-extension-claude/build-binaries.sh
 
       - name: Verify binaries
         run: |
