@@ -3,7 +3,7 @@ name: Release Desktop Extension
 on:
   push:
     tags:
-      - 'v*.*.*'  # Trigger on version tags like v1.0.0, v1.2.3, etc.
+      - 'v*.*.*-ext'  # Trigger on extension version tags like v1.0.0-ext, v1.2.3-ext, etc.
 
 permissions:
   contents: write  # Required for creating releases

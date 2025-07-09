@@ -136,7 +136,8 @@ release-extension VERSION:
     #!/usr/bin/env bash
     # Strip 'v' prefix if present to avoid double 'v'
     VERSION_CLEAN=$(echo "{{VERSION}}" | sed 's/^v//')
-    TAG_NAME="v${VERSION_CLEAN}"
+    # Add -ext suffix to distinguish from upstream releases
+    TAG_NAME="v${VERSION_CLEAN}-ext"
     
     echo "🚀 Creating release with desktop extension automation: ${TAG_NAME}"
     echo ""

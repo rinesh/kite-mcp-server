@@ -1,12 +1,14 @@
-# Kite MCP Server
+# Kite MCP Server - Desktop Extension Edition
 
 A Model Context Protocol (MCP) server that provides AI assistants with secure access to the Kite Connect trading API. This server enables AI agents to retrieve market data, manage portfolios, and execute trades through a standardized interface.
+
+> **This is an enhanced fork** that includes a Claude Desktop Extension for easy one-click installation. The extension is maintained separately from the [upstream repository](https://github.com/zerodha/kite-mcp-server) and provides additional features for desktop users.
 
 ## TL;DR for Traders
 
 Want to use AI with your Kite trading account? 
 
-**Easiest**: Install our [Claude Desktop Extension](https://github.com/zerodha/kite-mcp-server/releases) - One-click install, no configuration needed!
+**Easiest**: Install our [Claude Desktop Extension](https://github.com/rinesh/kite-mcp-server/releases) - One-click install, no configuration needed!
 
 **Alternative**: Add `https://mcp.kite.trade/mcp` to your AI client configuration. No installation or API keys required - it's hosted and ready to use.
 
@@ -105,7 +107,7 @@ The easiest and most secure way to use Kite MCP Server is through our Claude Des
 
 #### Installation
 
-1. **Download the Extension**: Get the latest `.dxt` file from our [releases page](https://github.com/zerodha/kite-mcp-server/releases)
+1. **Download the Extension**: Get the latest `.dxt` file from our [releases page](https://github.com/rinesh/kite-mcp-server/releases)
 2. **Install in Claude Desktop**: 
    - Open Claude Desktop
    - Go to Settings → Extensions
@@ -344,14 +346,37 @@ EXCLUDED_TOOLS=place_order,modify_order,cancel_order
 
 The hosted version at `mcp.kite.trade` excludes potentially destructive trading operations for security. For accessing the other operations you can generate your own API keys and run the server locally.
 
+## Fork Information
+
+This fork is maintained to provide the Claude Desktop Extension functionality. It stays synchronized with the upstream repository while adding:
+
+- **Desktop Extension**: One-click installation for Claude Desktop users
+- **Automated Releases**: GitHub Actions for building and packaging `.dxt` files
+- **Cross-platform Binaries**: Pre-built binaries for macOS, Windows, and Linux
+
+### Staying Updated
+
+This fork automatically syncs with the upstream repository weekly. You can also manually trigger a sync via GitHub Actions.
+
+### Desktop Extension Releases
+
+Extension releases use the `-ext` suffix (e.g., `v1.0.0-ext`) to distinguish them from upstream releases. Each release includes:
+- Pre-built `.dxt` file for Claude Desktop
+- Cross-platform binaries
+- Release notes with installation instructions
+
 ## Contributing
 
-1. Fork the repository
+For general MCP server contributions:
+1. Submit pull requests to the [upstream repository](https://github.com/zerodha/kite-mcp-server)
+
+For desktop extension specific contributions:
+1. Fork this repository
 2. Create a feature branch
 3. Make your changes
 4. Add tests for new functionality
 5. Run `just lint` and `just test`
-6. Submit a pull request
+6. Submit a pull request to this fork
 
 ## License
 
