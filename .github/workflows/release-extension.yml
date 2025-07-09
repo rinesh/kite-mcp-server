@@ -60,11 +60,44 @@ jobs:
           echo "clean_version=${VERSION#v}" >> $GITHUB_OUTPUT
           echo "Building version: $VERSION"
 
-      - name: Build cross-platform binaries
+      - name: Sync extension version
         run: |
           cd desktop-extension-claude
-          chmod +x build-binaries.sh sync-version.sh
-          ./build-binaries.sh
+          chmod +x sync-version.sh
+          ./sync-version.sh
+
+      - name: Build cross-platform binaries
+        run: |
+          # Create binaries directory
+          mkdir -p desktop-extension-claude/server/binaries
+          
+          # Get version and build info
+          VERSION=$(git describe --tags --dirty --always 2>/dev/null || echo "dev")
+          BUILD_STRING="$(date -u '+%Y-%m-%d %H:%M:%S UTC') - $(git rev-parse --short HEAD 2>/dev/null || echo 'unknown')"
+          LDFLAGS="-s -w -X 'main.MCP_SERVER_VERSION=$VERSION' -X 'main.buildString=$BUILD_STRING'"
+          
+          echo "Building version: $VERSION"
+          echo "Build string: $BUILD_STRING"
+          
+          # Build for all platforms
+          export CGO_ENABLED=0
+          
+          echo "Building for macOS AMD64..."
+          GOOS=darwin GOARCH=amd64 go build -o desktop-extension-claude/server/binaries/kite-mcp-darwin-amd64 -ldflags="$LDFLAGS" main.go
+          
+          echo "Building for macOS ARM64..."
+          GOOS=darwin GOARCH=arm64 go build -o desktop-extension-claude/server/binaries/kite-mcp-darwin-arm64 -ldflags="$LDFLAGS" main.go
+          
+          echo "Building for Windows AMD64..."
+          GOOS=windows GOARCH=amd64 go build -o desktop-extension-claude/server/binaries/kite-mcp-windows-amd64.exe -ldflags="$LDFLAGS" main.go
+          
+          echo "Building for Linux AMD64..."
+          GOOS=linux GOARCH=amd64 go build -o desktop-extension-claude/server/binaries/kite-mcp-linux-amd64 -ldflags="$LDFLAGS" main.go
+          
+          echo "Building for Linux ARM64..."
+          GOOS=linux GOARCH=arm64 go build -o desktop-extension-claude/server/binaries/kite-mcp-linux-arm64 -ldflags="$LDFLAGS" main.go
+          
+          echo "✅ All binaries built successfully!"
 
       - name: Verify binaries
         run: |
