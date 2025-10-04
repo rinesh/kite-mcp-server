@@ -403,6 +403,16 @@ func (m *Manager) CompleteSession(mcpSessionID, kiteRequestToken string) error {
 	m.Logger.Info("Setting Kite access token for MCP session", "session_id", mcpSessionID)
 	kiteData.Kite.Client.SetAccessToken(userSess.AccessToken)
 
+	// Compliance log for successful login
+	m.Logger.Info("COMPLIANCE: User login completed successfully",
+		"event", "user_login_success",
+		"user_id", userSess.UserID,
+		"session_id", mcpSessionID,
+		"timestamp", time.Now().UTC().Format(time.RFC3339),
+		"user_name", userSess.UserName,
+		"user_type", userSess.UserType,
+	)
+
 	// Track successful login
 	if m.metrics != nil {
 		m.metrics.TrackDailyUser(userSess.UserID)
@@ -429,6 +439,25 @@ func (m *Manager) CleanupExpiredSessions() int {
 // StopCleanupRoutine stops the background cleanup routine
 func (m *Manager) StopCleanupRoutine() {
 	m.sessionManager.StopCleanupRoutine()
+}
+
+// HasMetrics returns true if metrics manager is available
+func (m *Manager) HasMetrics() bool {
+	return m.metrics != nil
+}
+
+// IncrementMetric increments a metric counter by 1
+func (m *Manager) IncrementMetric(key string) {
+	if m.metrics != nil {
+		m.metrics.Increment(key)
+	}
+}
+
+// IncrementDailyMetric increments a daily metric counter by 1
+func (m *Manager) IncrementDailyMetric(key string) {
+	if m.metrics != nil {
+		m.metrics.IncrementDaily(key)
+	}
 }
 
 // Shutdown gracefully shuts down the manager and all its components
